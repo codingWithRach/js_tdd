@@ -1,0 +1,9 @@
+{
+  "devDependencies": {
+    "cross-env": "^7.0.3",
+    "jest": "^27.5.1"
+  },
+  "scripts": {
+    "test": "jest roman_numerals.test.js"
+  }
+}

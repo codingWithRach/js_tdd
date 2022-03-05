@@ -22,41 +22,43 @@ function getBowlingScore(bowlingLine) {
 
   // validation to check that the only allowed characters are X / - or digits 1-9
 
-  let isStrike = [false, false];
-  let strikeCount = [0, 0];
+  let isStrike = [2].fill(false);
+  let strikeCount = [2].fill(0);
   let isSpare = false;
-  let spareScore = 0;
   let score = 0;
   const rolls = bowlingLine.split(" ");
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
     // determine score relating to this roll (taking no account of previous rolls)
-    let thisScore = 0;
-    if (rolls[rollCount] === STRIKE || rolls[rollCount].includes(SPARE)) {
-      thisScore = 10;
+    const thisScore = [];
+    if (rolls[rollCount] === STRIKE) {
+      thisScore.push(10);
     } else {
       [...rolls[rollCount]].forEach((char) => {
-        if (/^[1-9]$/.test(char)) thisScore = parseInt(char);
+        /^[1-9]$/.test(char)
+          ? thisScore.push(parseInt(char))
+          : thisScore.push(0);
       });
     }
 
     // allow for either of 2 previous rolls being a strike
     for (let i = 0; i < isStrike.length; i++) {
       if (isStrike[i]) {
-        score += thisScore;
-        strikeCount[i] += 1;
-        // reset flag once we've followed the strike for 2 rolls
-        if (strikeCount[i] === 2) {
-          strikeCount[i] = 0;
-          isStrike[i] = false;
-        }
+        thisScore.forEach((ballThrow) => {
+          score += ballThrow;
+          strikeCount[i] += 1;
+          // reset flag once we've followed the strike for 2 rolls
+          if (strikeCount[i] === 2) {
+            strikeCount[i] = 0;
+            isStrike[i] = false;
+          }
+        });
       }
     }
 
-    // allow for previous roll being a spare - in this case we only add in the score from the first throw, not the entire round
+    // allow for previous roll being a spare
     if (isSpare) {
-      spareScore = parseInt(rolls[rollCount].charAt(0));
-      if (!Number.isNaN(spareScore)) score += spareScore;
+      score += thisScore[0];
       isSpare = false;
     }
 
@@ -64,7 +66,9 @@ function getBowlingScore(bowlingLine) {
     // some processing is therefore only relevant to the first 10 rolls
     if (rollCount < 10) {
       // append score from this roll
-      score += thisScore;
+      rolls[rollCount].includes(SPARE)
+        ? (score += 10)
+        : (score += thisScore.reduce((a, b) => a + b));
       // set flags to be used for future rolls
       isSpare = rolls[rollCount].includes(SPARE);
       if (rolls[rollCount] === STRIKE) {

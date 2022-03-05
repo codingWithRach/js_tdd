@@ -30,15 +30,13 @@ function getBowlingScore(bowlingLine) {
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
     // determine score relating to this roll (taking no account of previous rolls)
-    const thisScore = [];
+    let thisScore = [];
     if (rolls[rollCount] === STRIKE) {
       thisScore.push(10);
     } else {
-      [...rolls[rollCount]].forEach((char) => {
-        /^[1-9]$/.test(char)
-          ? thisScore.push(parseInt(char))
-          : thisScore.push(0);
-      });
+      thisScore = [...rolls[rollCount]]
+        .filter((char) => /^[1-9]$/.test(char))
+        .map((char) => parseInt(char));
     }
 
     // allow for either of 2 previous rolls being a strike

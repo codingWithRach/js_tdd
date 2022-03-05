@@ -4,6 +4,6 @@
     "jest": "^27.5.1"
   },
   "scripts": {
-    "test": "jest bowling_game.test.js"
+    "test": "jest"
   }
 }

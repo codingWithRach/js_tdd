@@ -30,13 +30,15 @@ function getBowlingScore(bowlingLine) {
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
     // determine score relating to this roll (taking no account of previous rolls)
-    let thisScore = [];
+    const thisScore = [];
     if (rolls[rollCount] === STRIKE) {
       thisScore.push(10);
     } else {
-      thisScore = [...rolls[rollCount]]
-        .filter((char) => /^[1-9]$/.test(char))
-        .map((char) => parseInt(char));
+      [...rolls[rollCount]].forEach((char) => {
+        if (/^[1-9]$/.test(char)) thisScore.push(parseInt(char));
+        else if (char === SPARE) thisScore.push(10 - thisScore[0]);
+        else thisScore.push(0);
+      });
     }
 
     // allow for either of 2 previous rolls being a strike
@@ -64,9 +66,7 @@ function getBowlingScore(bowlingLine) {
     // some processing is therefore only relevant to the first 10 rolls
     if (rollCount < 10) {
       // append score from this roll
-      rolls[rollCount].includes(SPARE)
-        ? (totalScore += 10)
-        : (totalScore += thisScore.reduce((a, b) => a + b));
+      totalScore += thisScore.reduce((a, b) => a + b);
       // set flags to be used for future rolls
       isSpare = rolls[rollCount].includes(SPARE);
       if (rolls[rollCount] === STRIKE) {

@@ -39,7 +39,6 @@ function getBowlingScore(bowlingLine) {
         if (/^[1-9]$/.test(char)) thisScore = parseInt(char);
       });
     }
-    console.log(thisScore);
 
     // allow for either of 2 previous rolls being a strike
     for (let i = 0; i < isStrike.length; i++) {

@@ -17,7 +17,44 @@
 //     The game score is the total of all frame scores.
 
 function getBowlingScore(bowlingLine) {
-  return 0;
+  const STRIKE = "X";
+
+  // validation to check that the only allowed characters are X / - or digits 1-9
+
+  let isStrike = [false, false];
+  let strikeCount = [0, 0];
+  let score = 0;
+  const rolls = bowlingLine.split(" ");
+
+  for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
+    // determine score relating to this roll (taking no account of previous rolls)
+    let thisScore = 0;
+    if (rolls[rollCount] === STRIKE) {
+      thisScore = 10;
+      // if this is one of the first 10 rolls, add the score to the total (otherwise, the score is only relevant if previous rolls were a strike or spare)
+      if (rollCount < 10) score += thisScore;
+    }
+
+    // allow for either of 2 previous rolls being a strike
+    for (let i = 0; i < isStrike.length; i++) {
+      if (isStrike[i]) {
+        score += thisScore;
+        strikeCount[i] += 1;
+        if (strikeCount[i] === 2) {
+          strikeCount[i] = 0;
+          isStrike[i] = false;
+        }
+      }
+    }
+
+    // now that this roll has been processed set flags relating to future rolls (only needed for first 10 rolls)
+    if (rollCount < 10) {
+      if (rolls[rollCount] === STRIKE) {
+        isStrike[0] ? (isStrike[1] = true) : (isStrike[0] = true);
+      }
+    }
+  }
+  return score;
 }
 
 module.exports = {

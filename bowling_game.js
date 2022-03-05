@@ -25,7 +25,7 @@ function getBowlingScore(bowlingLine) {
   let isStrike = [2].fill(false);
   let strikeCount = [2].fill(0);
   let isSpare = false;
-  let score = 0;
+  let totalScore = 0;
   const rolls = bowlingLine.split(" ");
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
@@ -45,7 +45,7 @@ function getBowlingScore(bowlingLine) {
     for (let i = 0; i < isStrike.length; i++) {
       if (isStrike[i]) {
         thisScore.forEach((ballThrow) => {
-          score += ballThrow;
+          totalScore += ballThrow;
           strikeCount[i] += 1;
           // reset flag once we've followed the strike for 2 rolls
           if (strikeCount[i] === 2) {
@@ -58,7 +58,7 @@ function getBowlingScore(bowlingLine) {
 
     // allow for previous roll being a spare
     if (isSpare) {
-      score += thisScore[0];
+      totalScore += thisScore[0];
       isSpare = false;
     }
 
@@ -67,8 +67,8 @@ function getBowlingScore(bowlingLine) {
     if (rollCount < 10) {
       // append score from this roll
       rolls[rollCount].includes(SPARE)
-        ? (score += 10)
-        : (score += thisScore.reduce((a, b) => a + b));
+        ? (totalScore += 10)
+        : (totalScore += thisScore.reduce((a, b) => a + b));
       // set flags to be used for future rolls
       isSpare = rolls[rollCount].includes(SPARE);
       if (rolls[rollCount] === STRIKE) {
@@ -76,7 +76,7 @@ function getBowlingScore(bowlingLine) {
       }
     }
   }
-  return score;
+  return totalScore;
 }
 
 module.exports = {

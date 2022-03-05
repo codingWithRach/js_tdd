@@ -35,11 +35,11 @@ export function getBowlingScore(bowlingLine) {
     if (rolls[rollCount] === STRIKE) {
       thisScore.push(10);
     } else {
-      [...rolls[rollCount]].forEach((char) => {
+      for (const char of rolls[rollCount]) {
         if (/^[1-9]$/.test(char)) thisScore.push(parseInt(char));
         else if (char === SPARE) thisScore.push(10 - thisScore[0]);
         else thisScore.push(0);
-      });
+      }
     }
 
     // allow for either of 2 previous rolls being a strike

@@ -16,7 +16,7 @@
 //     If he gets a spare or strike in the last (tenth) frame, the bowler gets to throw one or two more bonus balls, respectively. These bonus throws are taken as part of the same turn. If the bonus throws knock down all the pins, the process does not repeat: the bonus throws are only used to calculate the score of the final frame.
 //     The game score is the total of all frame scores.
 
-function getBowlingScore(bowlingLine) {
+export function getBowlingScore(bowlingLine) {
   const STRIKE = "X";
   const SPARE = "/";
 
@@ -77,7 +77,3 @@ function getBowlingScore(bowlingLine) {
   }
   return totalScore;
 }
-
-module.exports = {
-  getBowlingScore,
-};

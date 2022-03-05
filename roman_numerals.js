@@ -20,7 +20,7 @@ const romans = {
   1000: "M",
 };
 
-function convertToRoman(num) {
+export function convertToRoman(num) {
   if (!Number.isInteger(num)) return "";
   const arabics = Object.keys(romans).sort((a, b) => b - a);
   let result = "";
@@ -33,7 +33,7 @@ function convertToRoman(num) {
   return result;
 }
 
-function convertToArabic(roman) {
+export function convertToArabic(roman) {
   if (!/^[IVXLCDM]*$/.test(roman)) return 0;
   const romanChars = Object.keys(romans)
     .sort((a, b) => b - a)
@@ -49,8 +49,3 @@ function convertToArabic(roman) {
   });
   return result;
 }
-
-module.exports = {
-  convertToRoman,
-  convertToArabic,
-};

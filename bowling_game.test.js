@@ -13,6 +13,7 @@ describe("getBowlingScore function", () => {
     ["X X X X X X X X X X X X", 300],
     ["9- 9- 9- 9- 9- 9- 9- 9- 9- 9-", 90],
     ["5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5", 150],
+    ["6/ 81 -- -- -- -- -- -- -- --", 27],
   ])(`should score the bowling line %p as %p`, (bowlingLine, score) => {
     expect(getBowlingScore(bowlingLine)).toEqual(score);
   });

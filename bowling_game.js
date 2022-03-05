@@ -31,8 +31,6 @@ function getBowlingScore(bowlingLine) {
     let thisScore = 0;
     if (rolls[rollCount] === STRIKE) {
       thisScore = 10;
-      // if this is one of the first 10 rolls, add the score to the total (otherwise, the score is only relevant if previous rolls were a strike or spare)
-      if (rollCount < 10) score += thisScore;
     }
 
     // allow for either of 2 previous rolls being a strike
@@ -40,6 +38,7 @@ function getBowlingScore(bowlingLine) {
       if (isStrike[i]) {
         score += thisScore;
         strikeCount[i] += 1;
+        // reset flag once we've followed the strike for 2 rolls
         if (strikeCount[i] === 2) {
           strikeCount[i] = 0;
           isStrike[i] = false;
@@ -47,8 +46,12 @@ function getBowlingScore(bowlingLine) {
       }
     }
 
-    // now that this roll has been processed set flags relating to future rolls (only needed for first 10 rolls)
+    // if there are more than 10 rolls, the excess ones are only relevant if previous rolls were a strike or spare
+    // some processing is therefore only relevant to the first 10 rolls
     if (rollCount < 10) {
+      // append score from this roll
+      score += thisScore;
+      // set flags to be used for future rolls
       if (rolls[rollCount] === STRIKE) {
         isStrike[0] ? (isStrike[1] = true) : (isStrike[0] = true);
       }

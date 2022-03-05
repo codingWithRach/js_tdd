@@ -9,10 +9,10 @@
 const { getBowlingScore } = require("./bowling_game.js");
 
 describe("getBowlingScore function", () => {
-  test.each([["X X X X X X X X X X X X", 300]])(
-    `should score the bowling line %p as %p`,
-    (bowlingLine, score) => {
-      expect(getBowlingScore(bowlingLine)).toEqual(score);
-    }
-  );
+  test.each([
+    ["X X X X X X X X X X X X", 300],
+    ["9- 9- 9- 9- 9- 9- 9- 9- 9- 9-", 90],
+  ])(`should score the bowling line %p as %p`, (bowlingLine, score) => {
+    expect(getBowlingScore(bowlingLine)).toEqual(score);
+  });
 });

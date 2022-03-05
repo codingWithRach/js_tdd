@@ -21,11 +21,12 @@ function getBowlingScore(bowlingLine) {
   const SPARE = "/";
 
   // validation to check that the only allowed characters are X / - or digits 1-9
+  let totalScore = 0;
+  if (!/^[0-9X\/\- ]*$/.test(bowlingLine)) return totalScore;
 
   let isStrike = [2].fill(false);
   let strikeCount = [2].fill(0);
   let isSpare = false;
-  let totalScore = 0;
   const rolls = bowlingLine.split(" ");
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {

@@ -14,7 +14,10 @@ describe("getBowlingScore function", () => {
     ["9- 9- 9- 9- 9- 9- 9- 9- 9- 9-", 90],
     ["5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5/ 5", 150],
     ["6/ 81 -- -- -- -- -- -- -- --", 27],
+    ["6/ 81 ?? ?? ?? ?? ?? ?? ?? ??", 0],
   ])(`should score the bowling line %p as %p`, (bowlingLine, score) => {
     expect(getBowlingScore(bowlingLine)).toEqual(score);
   });
 });
+
+// I'm aware that in a real-world scenario I need to be much more thorough with test cases!

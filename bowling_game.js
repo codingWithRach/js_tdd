@@ -18,24 +18,28 @@
 
 function getBowlingScore(bowlingLine) {
   const STRIKE = "X";
+  const SPARE = "/";
 
   // validation to check that the only allowed characters are X / - or digits 1-9
 
   let isStrike = [false, false];
   let strikeCount = [0, 0];
+  let isSpare = false;
+  let spareScore = 0;
   let score = 0;
   const rolls = bowlingLine.split(" ");
 
   for (let rollCount = 0; rollCount < rolls.length; rollCount++) {
     // determine score relating to this roll (taking no account of previous rolls)
     let thisScore = 0;
-    if (rolls[rollCount] === STRIKE) {
+    if (rolls[rollCount] === STRIKE || rolls[rollCount].includes(SPARE)) {
       thisScore = 10;
     } else {
       [...rolls[rollCount]].forEach((char) => {
-        if (/^[1-9]$/.test(char)) thisScore += parseInt(char);
+        if (/^[1-9]$/.test(char)) thisScore = parseInt(char);
       });
     }
+    console.log(thisScore);
 
     // allow for either of 2 previous rolls being a strike
     for (let i = 0; i < isStrike.length; i++) {
@@ -50,12 +54,20 @@ function getBowlingScore(bowlingLine) {
       }
     }
 
+    // allow for previous roll being a spare - in this case we only add in the score from the first throw, not the entire round
+    if (isSpare) {
+      spareScore = parseInt(rolls[rollCount].charAt(0));
+      if (!Number.isNaN(spareScore)) score += spareScore;
+      isSpare = false;
+    }
+
     // if there are more than 10 rolls, the excess ones are only relevant if previous rolls were a strike or spare
     // some processing is therefore only relevant to the first 10 rolls
     if (rollCount < 10) {
       // append score from this roll
       score += thisScore;
       // set flags to be used for future rolls
+      isSpare = rolls[rollCount].includes(SPARE);
       if (rolls[rollCount] === STRIKE) {
         isStrike[0] ? (isStrike[1] = true) : (isStrike[0] = true);
       }
